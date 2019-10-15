@@ -1,2 +1,2 @@
 # JLinker
-Linker for js filies
+Linker for JS filies
