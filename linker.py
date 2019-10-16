@@ -17,9 +17,8 @@ def getFileExtension(filePath):
 
 
 def getTextFromFile(filePath):
-    codeString = ''
     linkableFile = open(filePath, mode = 'r',encoding = 'UTF-8')
-    codeString += linkableFile.read()+'\n'                                       #add to output code string new code from linked file
+    codeString = linkableFile.read() + '\n'                                       #add to output code string new code from linkable file
     linkableFile.close()
     return codeString
 
