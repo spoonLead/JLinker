@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 #output file
 outFile = open('main.js', 'w', encoding = 'UTF-8')
@@ -21,16 +22,18 @@ def toLink(dir, file):
 
 
 def linkFile(dir, file):
-    fileExtension = file.split('.')[1]       #split file name to name and extension for '.'
+    fileExtension = getFileExtension(file)
     #link files with only "js" destination
-    if(fileExtension == "js"):
+    if(fileExtension == ".js"):
         toLink(subDir[0], file)
         print(str(dir)+'/'+str(file))
 
+def getFileExtension(file):
+    return Path(file).suffix
 
 for dir in linkedDirs.values():             #iteration for all directories in linkedDirs{}
     for subDir in os.walk(dir):             #iteration for all subdirectories
-        for finalFile in subDir[2]          #iteration for all destination files
+        for finalFile in subDir[2]:          #iteration for all destination files
             linkFile(dir, finalFile)
 
 outFile.close()         #close output file
