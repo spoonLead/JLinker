@@ -1,11 +1,18 @@
 import os
+from pathlib import Path
 
-def linker():
-    outPutFile = open('main.js', 'w', encoding = 'UTF-8')
+def linker(extention, outPutFileName):
+
+    global FINAL_FILE_EXTENTION
+    global OUTPUT_FILE_NAME
+    FINAL_FILE_EXTENTION = extention
+    OUTPUT_FILE_NAME = outPutFileName
+
+    outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding = 'UTF-8')
 
     # TODO: transfer to json
     # directories in witch files for linking are located
-    linkedDirs = {
+    linkableDirs = {
         "engine" : './engine',
         "graphics" : './graphics',
         "game" : './game'
@@ -22,12 +29,12 @@ def linker():
 
 
 
-def getFilePathForDirAndName(dir, file):
-    return str(str(dir) + '/' + str(file))
+def getFilePathForDirAndName(dir, fileName):
+    return str(str(dir) + '/' + str(fileName))
 
 
 def linkFinalFileWithOutPutFile(filePath, outPutFile):
-    if( (getFileExtension(filePath) == ".js") and (os.path.basename(filePath) != 'main.js') ):
+    if( (getFileExtension(filePath) == FINAL_FILE_EXTENTION) and (os.path.basename(filePath) != OUTPUT_FILE_NAME) ):
         outPutFile.write(getTextFromFile(filePath))
 
 def getFileExtension(filePath):
@@ -42,5 +49,3 @@ def getTextFromFile(filePath):
 
 def printRelativePathForFile(filePath):
     print(filePath)
-
-linker()
