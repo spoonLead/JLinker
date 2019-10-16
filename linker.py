@@ -12,8 +12,18 @@ linkedDirs = {
 
 
 def linker():
+    printHeader()
     makeGlobalVarsFromArgv()
     toLink()
+    printFooter()
+
+def printHeader():
+    print("  --- Start linking ---")
+    print("\n *Files have been linked: \n")
+
+def printFooter():
+    print("\n --- Linking complete ---")
+
 
 def makeGlobalVarsFromArgv():
     global FINAL_FILE_EXTENTION
@@ -56,6 +66,6 @@ def getTextFromFile(filePath):
 
 
 def printRelativePathForFile(filePath):
-    print(filePath)
+    print(' ' + filePath)
 
 linker()
