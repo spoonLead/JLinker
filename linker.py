@@ -1,32 +1,41 @@
 import os
+import sys
 from pathlib import Path
 
-def linker(finalFileExtension, outputFileName):
+# TODO: transfer to json
+global linkedDirs       # directories in witch files for linking are located
+linkedDirs = {
+    "engine" : './engine',
+    "graphics" : './graphics',
+    "game" : './game'
+}
+
+
+def linker():
+    makeGlobalVarsFromArgv()
+    toLink()
+
+def makeGlobalVarsFromArgv():
     global FINAL_FILE_EXTENTION
     global OUTPUT_FILE_NAME
-    FINAL_FILE_EXTENTION = finalFileExtension
-    OUTPUT_FILE_NAME = outputFileName
 
+    if len (sys.argv) > 2:
+        FINAL_FILE_EXTENTION = sys.argv[1]
+        OUTPUT_FILE_NAME = sys.argv[2]
+    else:
+        FINAL_FILE_EXTENTION = ".js"
+        OUTPUT_FILE_NAME = "main.js"
+
+
+def toLink():
     outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding = 'UTF-8')
-
-    # TODO: transfer to json
-    # directories in witch files for linking are located
-    linkedDirs = {
-        "engine" : './engine',
-        "graphics" : './graphics',
-        "game" : './game'
-    }
-
     for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):              # iteration for all subdirectories
             for finalFile in subDir[2]:          # iteration for all destination files
                 filePath = getFilePathForDirAndName(dir, finalFile)
                 linkFinalFileWithOutPutFile(filePath, outPutFile)
                 printRelativePathForFile(filePath)
-
     outPutFile.close()         # close output file
-
-
 
 def getFilePathForDirAndName(dir, file):
     return str(str(dir) + '/' + str(file))
@@ -49,4 +58,4 @@ def getTextFromFile(filePath):
 def printRelativePathForFile(filePath):
     print(filePath)
 
-linker(".js", "main.js")
+linker()
