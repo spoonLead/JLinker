@@ -47,8 +47,10 @@ def toLink():
                 printRelativePathForFile(filePath)
     outPutFile.close()         # close output file
 
-def getFilePathForDirAndName(dir, file):
-    return str(str(dir) + '/' + str(file))
+
+
+def getFilePathForDirAndName(dir, fileName):
+    return str(str(dir) + '/' + str(fileName))
 
 
 def linkFinalFileWithOutPutFile(filePath, outPutFile):
