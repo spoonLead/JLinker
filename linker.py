@@ -4,25 +4,28 @@ from pathlib import Path
 
 
 
-def getFilePath(dir, file):
+def getFilePathForDirAndName(dir, file):
     return str(str(dir) + '/' + str(file))
 
 
 def linkFile(filePath):
-    if(getFileExtension(filePath) == ".js"):
+    if( (getFileExtension(filePath) == ".js") and (os.path.basename(filePath) != 'main.js') ):
         toLink(filePath)
 
 def getFileExtension(filePath):
     return Path(filePath).suffix
 
+
+def getTextFromFile(filePath):
+    codeString = ''
+    linkableFile = open(filePath, mode = 'r',encoding = 'UTF-8')
+    codeString += linkableFile.read()+'\n'                                       #add to output code string new code from linked file
+    linkableFile.close()
+    return codeString
+
 #LINKER METHOD
 def toLink(filePath):
-    outCodeString = ''      #output 0615code string which will be placed into ouput file
-    if os.path.basename(filePath) != 'main.js':
-        linkableFile = open(filePath, mode = 'r',encoding = 'UTF-8')      #open file for link
-        outCodeString += linkableFile.read()+'\n'                                       #add to output code string new code from linked file
-        linkableFile.close()                                                            #close file for link
-    outFile.write(outCodeString)
+    outFile.write(getTextFromFile(filePath))
 
 
 def printRelativePathForFile(filePath):
@@ -43,7 +46,7 @@ linkedDirs = {
 for dir in linkedDirs.values():             #iteration for all directories in linkedDirs{}
     for subDir in os.walk(dir):             #iteration for all subdirectories
         for finalFile in subDir[2]:          #iteration for all destination files
-            filePath = getFilePath(dir, finalFile)
+            filePath = getFilePathForDirAndName(dir, finalFile)
             linkFile(filePath)
             printRelativePathForFile(filePath)
 
