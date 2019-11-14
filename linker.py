@@ -42,13 +42,13 @@ def toLink():
     for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):              # iteration for all subdirectories
             for finalFile in subDir[2]:          # iteration for all destination files
-                filePath = getFilePathForDirAndName(dir, finalFile)
+                filePath = getFilePathForDirAndName(subDir, finalFile)
                 linkFinalFileWithOutPutFile(filePath, outPutFile)
                 printRelativePathForFile(filePath)
-    outPutFile.close()         
+    outPutFile.close()
 
-def getFilePathForDirAndName(dir, fileName):
-    return str(str(dir) + '/' + str(fileName))
+def getFilePathForDirAndName(subDir, fileName):
+    return str(str(subDir[0]) + '/' + str(fileName))
 
 
 def linkFinalFileWithOutPutFile(filePath, outPutFile):
