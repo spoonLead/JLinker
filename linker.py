@@ -8,17 +8,20 @@ def linker():
     printHeader()
     makeGlobalVarsFromArgv()
     linked_dirs = makeLinkedDirsDic(LINKED_DIRS_PATH)
-    toLink(linked_dirs)
+    linkFilesInDirs(linked_dirs)
     printFooter()
+
 
 
 def printHeader():
     print("  --- Start linking ---")
     print("\n *Files have been linked: \n")
 
-
 def printFooter():
     print("\n --- Linking complete ---")
+
+
+
 
 
 def makeGlobalVarsFromArgv():
@@ -34,6 +37,9 @@ def makeGlobalVarsFromArgv():
         FINAL_FILE_EXTENTION = ".js"
         OUTPUT_FILE_NAME = "main.js"
         LINKED_DIRS_PATH = './linked_dirs'
+
+
+
 
 
 def makeLinkedDirsDic(LINKED_DIRS_PATH):
@@ -52,7 +58,10 @@ def makeLinkedDirsDic(LINKED_DIRS_PATH):
     return linkedDirs
 
 
-def toLink(linkedDirs):
+
+
+
+def linkFilesInDirs(linkedDirs):
     outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding='UTF-8')
     for dir in linkedDirs.values():  # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):  # iteration for all subdirectories
@@ -63,24 +72,25 @@ def toLink(linkedDirs):
     outPutFile.close()
 
 
+
 def getFilePathForDirAndName(dir, fileName):
     return str(str(dir) + '/' + str(fileName))
+
 
 
 def linkFinalFileWithOutPutFile(filePath, outPutFile):
     if ((getFileExtension(filePath) == FINAL_FILE_EXTENTION) and (os.path.basename(filePath) != OUTPUT_FILE_NAME)):
         outPutFile.write(getTextFromFile(filePath))
 
-
 def getFileExtension(filePath):
     return Path(filePath).suffix
-
 
 def getTextFromFile(filePath):
     linkableFile = open(filePath, mode='r', encoding='UTF-8')
     codeString = linkableFile.read() + '\n'  # add to output code string new code from linkable file
     linkableFile.close()
     return codeString
+
 
 
 def printRelativePathForFile(filePath):
