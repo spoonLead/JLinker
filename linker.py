@@ -44,28 +44,25 @@ def makeGlobalVarsFromArgv():
 def getLinkedDirsDic():
     # directories in which files for linking are located
     if os.path.exists(LINKED_DIRS_PATH):
-        with open(LINKED_DIRS_PATH, 'r') as fh:
-            linkedDirs = json.load(fh)
+        linkedDirs = getDataFromJSON(LINKED_DIRS_PATH)
     else:
-        print("Linked dir file not found! default values will be used.")
-
-        linkedDirs = {
-            "engine": './engine',
-            "graphics": './graphics',
-            "game": './game'
-        }
+        print("Linked dir file not found! default values will be used. \n")
+        linkedDirs = getDataFromJSON('./default_linked_dirs.json')
     return linkedDirs
 
+def getDataFromJSON(JSON):
+    with open(JSON, 'r') as file:
+        return(json.load(file))
 
 
 
 
 def linkFilesInDirs(linkedDirs):
-    outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding='UTF-8')
-    for dir in linkedDirs.values():  # iteration for all directories in linkedDirs{}
-        for subDir in os.walk(dir):  # iteration for all subdirectories
-            for finalFile in subDir[2]:  # iteration for all destination files
-                filePath = getFilePathForDirAndName(dir, finalFile)
+    outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding = 'UTF-8')
+    for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
+        for subDir in os.walk(dir):              # iteration for all subdirectories
+            for finalFile in subDir[2]:          # iteration for all destination files
+                filePath = getFilePathForDirAndName(subDir, finalFile)
                 linkFinalFileWithOutPutFile(filePath, outPutFile)
                 printRelativePathForFile(filePath)
     outPutFile.close()
