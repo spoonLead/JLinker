@@ -46,7 +46,7 @@ def getLinkedDirsDic():
     if os.path.exists(LINKED_DIRS_PATH):
         linkedDirs = getDataFromJSON(LINKED_DIRS_PATH)
     else:
-        print("Linked dir file not found! default values will be used.")
+        print("Linked dir file not found! default values will be used. \n")
         linkedDirs = getDataFromJSON('./default_linked_dirs.json')
     return linkedDirs
 
@@ -58,11 +58,11 @@ def getDataFromJSON(JSON):
 
 
 def linkFilesInDirs(linkedDirs):
-    outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding='UTF-8')
-    for dir in linkedDirs.values():  # iteration for all directories in linkedDirs{}
-        for subDir in os.walk(dir):  # iteration for all subdirectories
-            for finalFile in subDir[2]:  # iteration for all destination files
-                filePath = getFilePathForDirAndName(dir, finalFile)
+    outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding = 'UTF-8')
+    for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
+        for subDir in os.walk(dir):              # iteration for all subdirectories
+            for finalFile in subDir[2]:          # iteration for all destination files
+                filePath = getFilePathForDirAndName(subDir, finalFile)
                 linkFinalFileWithOutPutFile(filePath, outPutFile)
                 printRelativePathForFile(filePath)
     outPutFile.close()
