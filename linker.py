@@ -35,7 +35,7 @@ def makeGlobalVarsFromArgv():
     else:
         FINAL_FILE_EXTENTION = ".js"
         OUTPUT_FILE_NAME = "main.js"
-        LINKED_DIRS_PATH = './linked_dirs'
+        LINKED_DIRS_PATH = './linked_dirs.json'
 
 
 
