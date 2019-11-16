@@ -24,17 +24,17 @@ def printFooter():
 
 
 def makeGlobalVarsFromArgv():
-    global FINAL_FILE_EXTENTION
-    global OUTPUT_FILE_NAME
-    global LINKED_DIRS_PATH
+    global LINKABLE_FILES_EXTENSION
+    global FULL_NAME_OUTPUT_FILE
+    global LINKED_DIRS_FILE_NAME
 
     if len(sys.argv) == 4:
-        FINAL_FILE_EXTENTION = sys.argv[1]
-        OUTPUT_FILE_NAME = sys.argv[2]
-        LINKED_DIRS_PATH = sys.argv[3]
+        LINKABLE_FILES_EXTENSION = sys.argv[1]
+        FULL_NAME_OUTPUT_FILE = sys.argv[2]
+        LINKED_DIRS_FILE_NAME = sys.argv[3]
     else:
-        FINAL_FILE_EXTENTION = ".js"
-        OUTPUT_FILE_NAME = "main.js"
+        LINKABLE_FILES_EXTENSION = ".js"
+        FULL_NAME_OUTPUT_FILE = "main.js"
 
 
 
@@ -42,10 +42,10 @@ def makeGlobalVarsFromArgv():
 
 def getLinkedDirsDic():
     # directories in which files for linking are located
-    if os.path.exists(LINKED_DIRS_PATH):
-        linkedDirs = getDataFromJSON(LINKED_DIRS_PATH)
+    if os.path.exists(LINKED_DIRS_FILE_NAME):
+        linkedDirs = getDataFromJSON('./' + LINKED_DIRS_FILE_NAME)
     else:
-        print("Sorry, linked_dirs.json file not found! Default values will be used. \n")
+        print("JSON file with linked directories not found! Default values will be used. \n")
         linkedDirs = getDataFromJSON('./default_linked_dirs.json')
     return linkedDirs
 
@@ -58,7 +58,7 @@ def getDataFromJSON(JSON):
 
 
 def linkFilesInDirs(linkedDirs):
-    outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding = 'UTF-8')
+    outPutFile = open(FULL_NAME_OUTPUT_FILE, 'w', encoding = 'UTF-8')
     for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):              # iteration for all subdirectories
             for finalFile in subDir[2]:          # iteration for all destination files
@@ -70,12 +70,12 @@ def linkFilesInDirs(linkedDirs):
 
 
 def getFilePathForDirAndName(subDir, fileName):
-    return str(str(subDir[0]) + '/' + str(fileName))
+    return str(str(subDir[0]) + "/" + str(fileName))
 
 
 
 def linkFinalFileWithOutPutFile(filePath, outPutFile):
-    if ((getFileExtension(filePath) == FINAL_FILE_EXTENTION) and (os.path.basename(filePath) != OUTPUT_FILE_NAME)):
+    if ((getFileExtension(filePath) == LINKABLE_FILES_EXTENSION) and (os.path.basename(filePath) != FULL_NAME_OUTPUT_FILE)):
         outPutFile.write(getTextFromFile(filePath))
 
 def getFileExtension(filePath):
