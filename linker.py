@@ -6,8 +6,7 @@ import json
 
 def linker():
     printHeader()
-    makeGlobalVarsFromArgv()
-    linkFilesInDirs(getLinkedDirsDic())
+    toLinkAccordingARGV()
     printFooter()
 
 
@@ -23,22 +22,47 @@ def printFooter():
 
 
 
-def makeGlobalVarsFromArgv():
+def toLinkAccordingARGV():
     global LINKABLE_FILES_EXTENSION
     global OUTPUT_FILE_NAME
     global LINKED_DIRS_FILE_NAME
+    global LINKING_FOR_FINAL_FILES
 
 
     if len(sys.argv) == 1:                                  # Using default parameters
         LINKABLE_FILES_EXTENSION = ".js"
         OUTPUT_FILE_NAME = "main.js"
         LINKED_DIRS_FILE_NAME = "default_linked_dirs.json"
+        LINKING_FOR_FINAL_FILES = False
+
     if len(sys.argv) == 4:                                  # Using castom parameters with linking for dirs
         LINKABLE_FILES_EXTENSION = sys.argv[1]
         OUTPUT_FILE_NAME = sys.argv[2]
         LINKED_DIRS_FILE_NAME = sys.argv[3]
+        LINKING_FOR_FINAL_FILES = False
+
+    if len(sys.argv) == 5:
+        LINKABLE_FILES_EXTENSION = sys.argv[1]
+        OUTPUT_FILE_NAME = sys.argv[2]
+        LINKED_DIRS_FILE_NAME = sys.argv[3]
+        if sys.argv[4] == "fl":
+            LINKING_FOR_FINAL_FILES = True
+
+    if LINKING_FOR_FINAL_FILES == False:
+        linkFilesInDirs(getLinkedDirsDic())
+    else:
+        linkFinalFiles(getFinalFilesDic())
 
 
+
+
+
+def getFinalFilesDic():
+    if os.path.exists(LINKED_DIRS_FILE_NAME):
+        finalFiles = getDataFromJSON('./' + LINKED_DIRS_FILE_NAME)
+    else:
+        print("File with linkable files not found")
+    return finalFiles
 
 
 
@@ -56,6 +80,14 @@ def getDataFromJSON(JSON):
         return(json.load(file))
 
 
+
+
+def linkFinalFiles(finalFiles):
+    outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding = 'UTF-8')
+    for finalFile in finalFiles.values():
+        linkFinalFileWithOutPutFile(finalFile, outPutFile)
+        printRelativePathForFile(finalFile)
+    outPutFile.close()
 
 
 
