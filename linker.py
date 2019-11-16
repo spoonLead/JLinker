@@ -7,18 +7,20 @@ import json
 def linker():
     printHeader()
     makeGlobalVarsFromArgv()
-    linked_dirs = makeLinkedDirsDic(LINKED_DIRS_PATH)
-    toLink(linked_dirs)
+    linkFilesInDirs(getLinkedDirsDic())
     printFooter()
+
 
 
 def printHeader():
     print("  --- Start linking ---")
     print("\n *Files have been linked: \n")
 
-
 def printFooter():
     print("\n --- Linking complete ---")
+
+
+
 
 
 def makeGlobalVarsFromArgv():
@@ -26,17 +28,20 @@ def makeGlobalVarsFromArgv():
     global OUTPUT_FILE_NAME
     global LINKED_DIRS_PATH
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         FINAL_FILE_EXTENTION = sys.argv[1]
         OUTPUT_FILE_NAME = sys.argv[2]
         LINKED_DIRS_PATH = sys.argv[3]
     else:
         FINAL_FILE_EXTENTION = ".js"
         OUTPUT_FILE_NAME = "main.js"
-        LINKED_DIRS_PATH = './linked_dirs'
+        LINKED_DIRS_PATH = './linked_dirs.json'
 
 
-def makeLinkedDirsDic(LINKED_DIRS_PATH):
+
+
+
+def getLinkedDirsDic():
     # directories in which files for linking are located
     if os.path.exists(LINKED_DIRS_PATH):
         with open(LINKED_DIRS_PATH, 'r') as fh:
@@ -52,7 +57,10 @@ def makeLinkedDirsDic(LINKED_DIRS_PATH):
     return linkedDirs
 
 
-def toLink(linkedDirs):
+
+
+
+def linkFilesInDirs(linkedDirs):
     outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding='UTF-8')
     for dir in linkedDirs.values():  # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):  # iteration for all subdirectories
@@ -63,24 +71,25 @@ def toLink(linkedDirs):
     outPutFile.close()
 
 
-def getFilePathForDirAndName(dir, fileName):
-    return str(str(dir) + '/' + str(fileName))
+
+def getFilePathForDirAndName(subDir, fileName):
+    return str(str(subDir[0]) + '/' + str(fileName))
+
 
 
 def linkFinalFileWithOutPutFile(filePath, outPutFile):
     if ((getFileExtension(filePath) == FINAL_FILE_EXTENTION) and (os.path.basename(filePath) != OUTPUT_FILE_NAME)):
         outPutFile.write(getTextFromFile(filePath))
 
-
 def getFileExtension(filePath):
     return Path(filePath).suffix
-
 
 def getTextFromFile(filePath):
     linkableFile = open(filePath, mode='r', encoding='UTF-8')
     codeString = linkableFile.read() + '\n'  # add to output code string new code from linkable file
     linkableFile.close()
     return codeString
+
 
 
 def printRelativePathForFile(filePath):
