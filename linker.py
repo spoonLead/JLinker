@@ -7,8 +7,7 @@ import json
 def linker():
     printHeader()
     makeGlobalVarsFromArgv()
-    linked_dirs = makeLinkedDirsDic(LINKED_DIRS_PATH)
-    linkFilesInDirs(linked_dirs)
+    linkFilesInDirs(getLinkedDirsDic())
     printFooter()
 
 
@@ -42,7 +41,7 @@ def makeGlobalVarsFromArgv():
 
 
 
-def makeLinkedDirsDic(LINKED_DIRS_PATH):
+def getLinkedDirsDic():
     # directories in which files for linking are located
     if os.path.exists(LINKED_DIRS_PATH):
         with open(LINKED_DIRS_PATH, 'r') as fh:
