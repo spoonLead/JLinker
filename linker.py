@@ -25,16 +25,18 @@ def printFooter():
 
 def makeGlobalVarsFromArgv():
     global LINKABLE_FILES_EXTENSION
-    global FULL_NAME_OUTPUT_FILE
+    global OUTPUT_FILE_NAME
     global LINKED_DIRS_FILE_NAME
 
-    if len(sys.argv) == 4:
-        LINKABLE_FILES_EXTENSION = sys.argv[1]
-        FULL_NAME_OUTPUT_FILE = sys.argv[2]
-        LINKED_DIRS_FILE_NAME = sys.argv[3]
-    else:
+
+    if len(sys.argv) == 1:                                  # Using default parameters
         LINKABLE_FILES_EXTENSION = ".js"
-        FULL_NAME_OUTPUT_FILE = "main.js"
+        OUTPUT_FILE_NAME = "main.js"
+        LINKED_DIRS_FILE_NAME = "default_linked_dirs.json"
+    if len(sys.argv) == 4:                                  # Using castom parameters with linking for dirs
+        LINKABLE_FILES_EXTENSION = sys.argv[1]
+        OUTPUT_FILE_NAME = sys.argv[2]
+        LINKED_DIRS_FILE_NAME = sys.argv[3]
 
 
 
@@ -58,7 +60,7 @@ def getDataFromJSON(JSON):
 
 
 def linkFilesInDirs(linkedDirs):
-    outPutFile = open(FULL_NAME_OUTPUT_FILE, 'w', encoding = 'UTF-8')
+    outPutFile = open(OUTPUT_FILE_NAME, 'w', encoding = 'UTF-8')
     for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):              # iteration for all subdirectories
             for finalFile in subDir[2]:          # iteration for all destination files
@@ -75,7 +77,7 @@ def getFilePathForDirAndName(subDir, fileName):
 
 
 def linkFinalFileWithOutPutFile(filePath, outPutFile):
-    if ((getFileExtension(filePath) == LINKABLE_FILES_EXTENSION) and (os.path.basename(filePath) != FULL_NAME_OUTPUT_FILE)):
+    if ((getFileExtension(filePath) == LINKABLE_FILES_EXTENSION) and (os.path.basename(filePath) != OUTPUT_FILE_NAME)):
         outPutFile.write(getTextFromFile(filePath))
 
 def getFileExtension(filePath):
