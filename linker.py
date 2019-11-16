@@ -28,7 +28,7 @@ def makeGlobalVarsFromArgv():
     global OUTPUT_FILE_NAME
     global LINKED_DIRS_PATH
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         FINAL_FILE_EXTENTION = sys.argv[1]
         OUTPUT_FILE_NAME = sys.argv[2]
         LINKED_DIRS_PATH = sys.argv[3]
