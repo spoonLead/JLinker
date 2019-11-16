@@ -44,18 +44,15 @@ def makeGlobalVarsFromArgv():
 def getLinkedDirsDic():
     # directories in which files for linking are located
     if os.path.exists(LINKED_DIRS_PATH):
-        with open(LINKED_DIRS_PATH, 'r') as fh:
-            linkedDirs = json.load(fh)
+        linkedDirs = getDataFromJSON(LINKED_DIRS_PATH)
     else:
         print("Linked dir file not found! default values will be used.")
-
-        linkedDirs = {
-            "engine": './engine',
-            "graphics": './graphics',
-            "game": './game'
-        }
+        linkedDirs = getDataFromJSON('./default_linked_dirs.json')
     return linkedDirs
 
+def getDataFromJSON(JSON):
+    with open(JSON, 'r') as file:
+        return(json.load(file))
 
 
 
