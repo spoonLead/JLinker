@@ -28,14 +28,13 @@ def makeGlobalVarsFromArgv():
     global OUTPUT_FILE_NAME
     global LINKED_DIRS_PATH
 
-    if len(sys.argv) > 3:
+    if len(sys.argv) == 4:
         FINAL_FILE_EXTENTION = sys.argv[1]
         OUTPUT_FILE_NAME = sys.argv[2]
         LINKED_DIRS_PATH = sys.argv[3]
     else:
         FINAL_FILE_EXTENTION = ".js"
         OUTPUT_FILE_NAME = "main.js"
-        LINKED_DIRS_PATH = './linked_dirs.json'
 
 
 
@@ -46,13 +45,14 @@ def getLinkedDirsDic():
     if os.path.exists(LINKED_DIRS_PATH):
         linkedDirs = getDataFromJSON(LINKED_DIRS_PATH)
     else:
-        print("Linked dir file not found! default values will be used. \n")
+        print("Sorry, linked_dirs.json file not found! Default values will be used. \n")
         linkedDirs = getDataFromJSON('./default_linked_dirs.json')
     return linkedDirs
 
 def getDataFromJSON(JSON):
     with open(JSON, 'r') as file:
         return(json.load(file))
+
 
 
 
