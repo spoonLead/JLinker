@@ -26,8 +26,12 @@ def printHeader():
 def printFooter():
     print("\n --- Linking complete ---")
 
-
 def toLinkAccordingARGV():
+    setGlobalVarsFromArgv()
+    toLink()
+
+
+def setGlobalVarsFromArgv():
     global LINKABLE_FILES_EXTENSION
     global OUTPUT_FILE_NAME
     global LINKED_DIRS_FILE_NAME
@@ -46,10 +50,13 @@ def toLinkAccordingARGV():
         if sys.argv[4] == "fl":
             LINKING_FOR_FINAL_FILES = True
 
+
+def toLink():
     if LINKING_FOR_FINAL_FILES == False:
         linkFilesInDirs(getLinkedDirsDic())
     else:
         linkFinalFiles(getFinalFilesDic())
+
 
 
 
