@@ -19,12 +19,16 @@ def linker():
 
 
 
+
 def printHeader():
     print("  --- Start linking ---")
     print("\n *Files have been linked: \n")
 
 def printFooter():
     print("\n --- Linking complete ---")
+
+
+
 
 def toLinkAccordingARGV():
     setGlobalVarsFromArgv()
@@ -55,6 +59,7 @@ def toLink():
 
 
 
+
 # TODO: fix return null finalFiles in else way
 def getFinalFilesDic():
     if os.path.exists(LINKED_DIRS_FILE_NAME):
@@ -62,6 +67,7 @@ def getFinalFilesDic():
     else:
         print("File with linkable files not found")
     return finalFiles
+
 
 
 
@@ -77,6 +83,7 @@ def getLinkedDirsDic():
 def getDataFromJSON(JSON):
     with open(JSON, 'r') as file:
         return(json.load(file))
+
 
 
 
@@ -102,6 +109,8 @@ def linkFilesInDirs(linkedDirs):
 
 
 
+
+
 def getFilePathForDirAndName(subDir, fileName):
     return str(str(subDir[0]) + "/" + str(fileName))
 
@@ -122,8 +131,15 @@ def getTextFromFile(filePath):
 
 
 
+
+
+
 def printRelativePathForFile(filePath):
     print(' ' + filePath)
+
+
+
+
 
 
 linker()
