@@ -4,6 +4,14 @@ from pathlib import Path
 import json
 
 
+#Global vars for linking and their default values
+LINKABLE_FILES_EXTENSION = ".js"
+OUTPUT_FILE_NAME = "main.js"
+LINKED_DIRS_FILE_NAME = "default_linked_dirs.json"
+LINKING_FOR_FINAL_FILES = False
+
+
+
 def linker():
     printHeader()
     toLinkAccordingARGV()
@@ -19,21 +27,11 @@ def printFooter():
     print("\n --- Linking complete ---")
 
 
-
-
-
 def toLinkAccordingARGV():
     global LINKABLE_FILES_EXTENSION
     global OUTPUT_FILE_NAME
     global LINKED_DIRS_FILE_NAME
     global LINKING_FOR_FINAL_FILES
-
-
-    if len(sys.argv) == 1:                                  # Using default parameters
-        LINKABLE_FILES_EXTENSION = ".js"
-        OUTPUT_FILE_NAME = "main.js"
-        LINKED_DIRS_FILE_NAME = "default_linked_dirs.json"
-        LINKING_FOR_FINAL_FILES = False
 
     if len(sys.argv) == 4:                                  # Using castom parameters with linking for dirs
         LINKABLE_FILES_EXTENSION = sys.argv[1]
@@ -56,7 +54,7 @@ def toLinkAccordingARGV():
 
 
 
-
+# TODO: fix return null finalFiles in else way
 def getFinalFilesDic():
     if os.path.exists(LINKED_DIRS_FILE_NAME):
         finalFiles = getDataFromJSON('./' + LINKED_DIRS_FILE_NAME)
