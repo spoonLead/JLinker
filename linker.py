@@ -60,12 +60,13 @@ def toLink():
 
 
 
-# TODO: fix return null finalFiles in else way
+
 def getFinalFilesDic():
     if os.path.exists(LINKED_DIRS_FILE_NAME):
         finalFiles = getDataFromJSON('./' + LINKED_DIRS_FILE_NAME)
     else:
-        print("File with linkable files not found")
+        print("Json with linkable files not found")
+        finalFiles = {}
     return finalFiles
 
 
