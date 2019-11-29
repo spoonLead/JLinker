@@ -52,10 +52,10 @@ def setGlobalVarsFromArgv():
 
 
 def toLink():
-    if LINKING_FOR_FINAL_FILES == False:
-        linkFilesInDirs(getLinkedDirsDic())
-    else:
+    if LINKING_FOR_FINAL_FILES:
         linkFinalFiles(getFinalFilesDic())
+    else:
+        linkFilesInDirs(getLinkedDirsDic())
 
 
 
