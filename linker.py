@@ -46,7 +46,7 @@ def setLinkingParamFromArgv():
         LINKABLE_FILES_EXTENSION = sys.argv[1]
         OUTPUT_FILE = sys.argv[2]
         LINKED_DIRS_FILE_NAME = sys.argv[3]
-        if (len(sys.argv) == 5) and (sys.argv[4] == "fl"):
+        if (len(sys.argv) == 5) and (sys.argv[4] == "f"):
             LINKING_FOR_FINAL_FILES = True
 
 
