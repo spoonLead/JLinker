@@ -38,7 +38,7 @@ To start the linker you have to install python and write in the console: "python
 py GCup/source/game/linker.py.
 ```
 ## How to set your linking parametres?
-### Setting directories with files for linking
+### For linking for directories with files
 **In this way Linker will use default params for directories** 
 You can use console arguments at starting linker this way: py 'linker.py path' 'extention of files you should link' 'name with extention of output file'. 
 ```
@@ -49,11 +49,26 @@ In this example linker will make GCup/myOutOutFile.js and put all code from js f
 **For use your custom directories** you have to make .json file in JLinker dir and fill it like this:
 ```
 {
-     "engine": "../ZEngine",          In the first " " you can write anything. That just for your comfort in search
-     "game": "../Game"
+     "engine": "../ZEngine",          In the first " " you can write anything. 
+     "game": "../Game"                That just for your comfort in search
 }
 ```
 And then starting linker as in the previous example but with the specified of .json file with your dirs for linking
+
+***Linker will link files in your dirs and in all subdirs recursive ***
+
 ```
 py GCup/JLinker/linker.py. .js ../myOutPutFile.js my_linking_dirs.json
+```
+### For linking for final files
+For linking for final files you have to make .json file in JLinker dir and fill it like this:
+```
+{
+     "engine": "../ZEngine/Init.js",          In the first " " you can write anything. 
+     "game": "../ZEngine/Scene.js"            That just for your comfort in search
+}
+```
+And then start linker specifying your .json file and using the key 'f':
+```
+py GCup/JLinker/linker.py. .js ../myOutPutFile.js my_linking_files.json f
 ```
