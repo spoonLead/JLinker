@@ -107,7 +107,6 @@ def linkFilesInDirs(linkedDirs):
         for subDir in os.walk(dir):              # iteration for all subdirectories
             for finalFile in subDir[2]:          # iteration for all destination files
                 filePath = getFilePathForDirAndName(subDir, finalFile)
-                #print(filePath)
                 linkFinalFileWithOutPutFile(filePath, outPutFile)
                 printRelativePathForFile(filePath)
     outPutFile.close()
