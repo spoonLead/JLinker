@@ -52,38 +52,44 @@ def setLinkingParamFromArgv():
 
 def toLink():
     if LINKING_FOR_FINAL_FILES:
-        linkFinalFiles(getFinalFilesDic())
+        linkFinalFiles(tryGetFinalFilesDic())
     else:
-        linkFilesInDirs(getLinkedDirsDic())
+        linkFilesInDirs(tryGetLinkedDirsDic())
 
 
 
 
 
 
+
+def tryGetFinalFilesDic():
+    try:
+        return getFinalFilesDic()
+    except ValueError:
+        logJSONDecodeError()
+        return {}
+    except FileNotFoundError:
+        logFileNotFoundError()
+        return {}
 
 def getFinalFilesDic():
-    if os.path.exists(LINKED_DIRS_FILE_NAME):
-        try:
-            finalFiles = getDataFromJSON(LINKED_DIRS_FILE_NAME)
-        except ValueError:
-            print(" Error: Wrong format of " + LINKED_DIRS_FILE_NAME)
-            return {}
-    else:
-        print("Json with linkable files not found")
-        finalFiles = {}
+    finalFiles = getDataFromJSON(LINKED_DIRS_FILE_NAME)
     return finalFiles
 
+def logJSONDecodeError():
+    print(" Error: Wrong format of " + LINKED_DIRS_FILE_NAME)
+
+def logFileNotFoundError():
+    print(" Json with linkable files not found")
 
 
-
-def getLinkedDirsDic():
+def tryGetLinkedDirsDic():
     # directories in which files for linking are located
     if os.path.exists(LINKED_DIRS_FILE_NAME):
         try:
             linkedDirs = getDataFromJSON(LINKED_DIRS_FILE_NAME)
         except ValueError:
-            print ("Error: Wrong format of " + LINKED_DIRS_FILE_NAME)
+            print(" Error: Wrong format of " + LINKED_DIRS_FILE_NAME)
             return {}
     else:
         print("JSON file with linked directories not found! Default values will be used. \n")
