@@ -96,7 +96,7 @@ def linkFinalFiles(finalFiles):
     outPutFile = open(OUTPUT_FILE, 'w', encoding = 'UTF-8')
     for fileAnnotation, filePath in finalFiles.items():
         linkFinalFileWithOutPutFile(filePath, outPutFile)
-        printFileAnnotationAndRelativePath(fileAnnotation, filePath)
+        printAnnotationAndPathWithSplit(fileAnnotation, filePath, 30)
     outPutFile.close()
 
 
@@ -140,10 +140,10 @@ def getTextFromFile(filePath):
 
 
 
-def printFileAnnotationAndRelativePath(fileAnnotation, filePath):
+def printAnnotationAndPathWithSplit(fileAnnotation, filePath, split):
     printingString = " - "
     printingString += fileAnnotation
-    for i in range(0, 30-len(fileAnnotation)):
+    for i in range(0, split-len(fileAnnotation)):
         printingString += " "
     printingString += filePath
     print(printingString)
