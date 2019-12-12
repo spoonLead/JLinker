@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 
 
-# Linging params
+# Linking params
 # Global vars for linking and their default values
 LINKABLE_FILES_EXTENSION = ".js"
 OUTPUT_FILE = "../main.js"
@@ -46,7 +46,7 @@ def setLinkingParamFromArgv():
         LINKABLE_FILES_EXTENSION = sys.argv[1]
         OUTPUT_FILE = sys.argv[2]
         LINKED_DIRS_FILE_NAME = sys.argv[3]
-        if (len(sys.argv) == 5) and (sys.argv[4] == "f"):
+        if (len(sys.argv) == 5) and (sys.argv[4] == "fl"):
             LINKING_FOR_FINAL_FILES = True
 
 
@@ -94,9 +94,9 @@ def getDataFromJSON(JSON):
 
 def linkFinalFiles(finalFiles):
     outPutFile = open(OUTPUT_FILE, 'w', encoding = 'UTF-8')
-    for finalFile in finalFiles.values():
-        linkFinalFileWithOutPutFile(finalFile, outPutFile)
-        printRelativePathForFile(finalFile)
+    for fileAnnotation, filePath in finalFiles.items():
+        linkFinalFileWithOutPutFile(filePath, outPutFile)
+        printFileAnnotationAndRelativePath(fileAnnotation, filePath)
     outPutFile.close()
 
 
@@ -107,9 +107,8 @@ def linkFilesInDirs(linkedDirs):
         for subDir in os.walk(dir):              # iteration for all subdirectories
             for finalFile in subDir[2]:          # iteration for all destination files
                 filePath = getFilePathForDirAndName(subDir, finalFile)
-                #print(filePath)
                 linkFinalFileWithOutPutFile(filePath, outPutFile)
-                printRelativePathForFile(filePath)
+                printRelativeFilePath(filePath)
     outPutFile.close()
 
 
@@ -141,11 +140,16 @@ def getTextFromFile(filePath):
 
 
 
-def printRelativePathForFile(filePath):
-    print(' ' + filePath)
+def printFileAnnotationAndRelativePath(fileAnnotation, filePath):
+    printingString = " - "
+    printingString += fileAnnotation
+    for i in range(0, 30-len(fileAnnotation)):
+        printingString += " "
+    printingString += filePath
+    print(printingString)
 
-
-
+def printRelativeFilePath(filePath):
+    print(" " + filePath)
 
 
 
