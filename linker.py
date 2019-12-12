@@ -66,8 +66,9 @@ def getFinalFilesDic():
     if os.path.exists(LINKED_DIRS_FILE_NAME):
         try:
             finalFiles = getDataFromJSON(LINKED_DIRS_FILE_NAME)
-        except Exception:
-            print("Wrong format of " + LINKED_DIRS_FILE_NAME)
+        except ValueError:
+            print(" Error: Wrong format of " + LINKED_DIRS_FILE_NAME)
+            return {}
     else:
         print("Json with linkable files not found")
         finalFiles = {}
@@ -81,8 +82,9 @@ def getLinkedDirsDic():
     if os.path.exists(LINKED_DIRS_FILE_NAME):
         try:
             linkedDirs = getDataFromJSON(LINKED_DIRS_FILE_NAME)
-        except Exception:
-            print("Wrong format of " + LINKED_DIRS_FILE_NAME)
+        except ValueError:
+            print ("Error: Wrong format of " + LINKED_DIRS_FILE_NAME)
+            return {}
     else:
         print("JSON file with linked directories not found! Default values will be used. \n")
         linkedDirs = getDataFromJSON('default_linked_dirs.json')
