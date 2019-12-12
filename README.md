@@ -33,14 +33,17 @@ For example:
 ## How to use Linker?
 In default Linker links files in directories(dirs) 'engine', 'graphics', 'game' and their subdirectories. Linker have to be in same dirs as the 'engine', 'graphics' and 'game'. If you want to change this, you have to edit linkedDirs in linker.py.
 
-To start the linker you have to install python and write in the console: "python3 *path to your linker.py*" (for linux|Mac) or "py *path to your linker.py*" (for Windows). You can use absolute or relative path. 
+To start the linker you have to install python and write in the console: "py/python3 *path to your linker.py*" (for linux|Mac) or "py *path to your linker.py*" (for Windows). You can use absolute or relative path. 
 ```
 py GCup/source/game/linker.py.
 ```
 ## How to set your linking parametres?
 ### For linking for directories with files
-**In this way Linker will use default params for directories** 
-You can use console arguments at starting linker this way: py 'linker.py path' 'extention of files you should link' 'name with extention of output file'. 
+
+***Linker will link files in your dirs and in all subdirs recursive***
+
+**In this way Linker will use default params for directories**
+You can use console arguments at starting linker this way: py/python3 'linker.py path' 'extention of files you should link' 'name with extention of output file'. 
 ```
 py GCup/JLinker/linker.py. .js ../myOutPutFile.js
 ```
@@ -55,7 +58,6 @@ In this example linker will make GCup/myOutOutFile.js and put all code from js f
 ```
 And then starting linker as in the previous example but with the specified of .json file with your dirs for linking
 
-***Linker will link files in your dirs and in all subdirs recursive ***
 
 ```
 py GCup/JLinker/linker.py. .js ../myOutPutFile.js my_linking_dirs.json
