@@ -23,7 +23,7 @@ def linker():
 
 def printHeader():
     print("  --- Start linking ---")
-    print("\n *Files have been linked: \n")
+    print("\n Files have been linked: \n")
 
 def printFooter():
     print("\n --- Linking complete ---")
