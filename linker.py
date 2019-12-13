@@ -8,7 +8,7 @@ import json
 # Global vars for linking and their default values
 LINKABLE_FILES_EXTENSION = ".js"
 OUTPUT_FILE = "../main.js"
-LINKED_DIRS_FILE_NAME = "default_linked_dirs.json"
+LINKING_MAP_FILE = "default_linked_dirs.json"
 LINKING_FOR_FINAL_FILES = False
 
 
@@ -39,22 +39,22 @@ def toLinkAccordingArgv():
 def setLinkingParamFromArgv():
     global LINKABLE_FILES_EXTENSION
     global OUTPUT_FILE
-    global LINKED_DIRS_FILE_NAME
+    global LINKING_MAP_FILE
     global LINKING_FOR_FINAL_FILES
 
     if len(sys.argv) >= 4:
         LINKABLE_FILES_EXTENSION = sys.argv[1]
         OUTPUT_FILE = sys.argv[2]
-        LINKED_DIRS_FILE_NAME = sys.argv[3]
+        LINKING_MAP_FILE = sys.argv[3]
         if (len(sys.argv) == 5) and (sys.argv[4] == "f"):
             LINKING_FOR_FINAL_FILES = True
 
 
 def toLink():
     if LINKING_FOR_FINAL_FILES:
-        linkFinalFiles(getFinalFilesDic())
+        linkForFinalFiles(getLinkingMapFromFile(LINKING_MAP_FILE))
     else:
-        linkFilesInDirs(getLinkedDirsDic())
+        linkForFilesInDirs(getLinkingMapFromFile(LINKING_MAP_FILE))
 
 
 
@@ -62,40 +62,25 @@ def toLink():
 
 
 
-def getFinalFilesDic():
+def getLinkingMapFromFile(filePath):
     try:
-        return tryGetFinalFilesDic()
+        return tryGetLinkingMap(filePath)
     except ValueError:
         logJSONDecodeError()
     except FileNotFoundError:
         logFileNotFoundError()
     return {}
 
-def tryGetFinalFilesDic():
-    finalFiles = getDataFromJSON(LINKED_DIRS_FILE_NAME)
+def tryGetLinkingMap(filePath):
+    finalFiles = getDataFromJSON(filePath)
     return finalFiles
-
-
-
-def getLinkedDirsDic():
-    try:
-        return tryGetLinkedDirsDic()
-    except ValueError:
-        logJSONDecodeError()
-    except FileNotFoundError:
-        logFileNotFoundError()
-    return {}
-
-def tryGetLinkedDirsDic():
-    linkedDirs = getDataFromJSON(LINKED_DIRS_FILE_NAME)
-    return linkedDirs
 
 
 def logJSONDecodeError():
     print(" Error: Wrong format of JSON file")
 
 def logFileNotFoundError():
-    print(" Json with linkable files not found")
+    print(" JSON with linking map not found")
 
 def getDataFromJSON(JSON):
     with open(JSON, 'r') as file:
@@ -107,7 +92,7 @@ def getDataFromJSON(JSON):
 
 
 
-def linkFinalFiles(finalFiles):
+def linkForFinalFiles(finalFiles):
     outPutFile = open(OUTPUT_FILE, 'w', encoding = 'UTF-8')
     for fileAnnotation, filePath in finalFiles.items():
         linkFinalFileWithOutPutFile(filePath, outPutFile)
@@ -116,7 +101,7 @@ def linkFinalFiles(finalFiles):
 
 
 
-def linkFilesInDirs(linkedDirs):
+def linkForFilesInDirs(linkedDirs):
     outPutFile = open(OUTPUT_FILE, 'w', encoding = 'UTF-8')
     for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):              # iteration for all subdirectories
