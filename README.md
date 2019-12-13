@@ -1,5 +1,4 @@
 # JLinker
-Linker for JavaScipt files
 
 ### What Linker do?
 Linker puts the text of multiple files into a single output file 
@@ -31,25 +30,25 @@ For example:
 ```
 
 ## How to use Linker?
-In default Linker links files in directories(dirs) 'engine', 'graphics', 'game' and their subdirectories. Linker have to be in same dirs as the 'engine', 'graphics' and 'game'. If you want to change this, you have to edit linkedDirs in linker.py.
+In default Linker links files in directories(dirs) 'engine', 'graphics', 'game' and their subdirectories. Linker have to be in same dirs as the 'engine', 'graphics' and 'game'. If you want to change dirs, you have to edit linkedDirs in linker.py.
 
-To start the linker you have to install python and write in the console: "py/python3 *path to your linker.py*" (for linux|Mac) or "py *path to your linker.py*" (for Windows). You can use absolute or relative path. 
+To start the linker you have to install python 3 and write in the console: "py/python3 *path to your linker.py*"  You can use absolute or relative path. 
 ```
-py GCup/source/game/linker.py.
+py GCup/JLinker/linker.py.
 ```
 ## How to set your linking parametres?
-### For linking for directories with files
+### Linking for directories with files
 
 ***Linker will link files in your dirs and in all subdirs recursive***
 
-**In this way Linker will use default params for directories**
+**Default source directories**
 You can use console arguments at starting linker this way: py/python3 'linker.py path' 'extention of files you should link' 'name with extention of output file'. 
 ```
 py GCup/JLinker/linker.py. .js ../myOutPutFile.js
 ```
 In this example linker will make GCup/myOutOutFile.js and put all code from js files in default linking directories
 
-**For use your custom directories** you have to make .json file in JLinker dir and fill it like this:
+**Your custom source directories** you have to make .json file in JLinker dir and fill it like this:
 ```
 {
      "engine": "../ZEngine",          In the first " " you can write anything. 
@@ -62,7 +61,7 @@ And then starting linker as in the previous example but with the specified of .j
 ```
 py GCup/JLinker/linker.py. .js ../myOutPutFile.js my_linking_dirs.json
 ```
-### For linking for final files
+### Linking for final files
 For linking for final files you have to make .json file in JLinker dir and fill it like this:
 ```
 {
