@@ -75,25 +75,27 @@ def tryGetFinalFilesDic():
     finalFiles = getDataFromJSON(LINKED_DIRS_FILE_NAME)
     return finalFiles
 
+
+
+def getLinkedDirsDic():
+    try:
+        return tryGetLinkedDirsDic()
+    except ValueError:
+        logJSONDecodeError()
+    except FileNotFoundError:
+        logFileNotFoundError()
+    return {}
+
+def tryGetLinkedDirsDic():
+    linkedDirs = getDataFromJSON(LINKED_DIRS_FILE_NAME)
+    return linkedDirs
+
+
 def logJSONDecodeError():
     print(" Error: Wrong format of JSON file")
 
 def logFileNotFoundError():
     print(" Json with linkable files not found")
-
-
-def getLinkedDirsDic():
-    # directories in which files for linking are located
-    if os.path.exists(LINKED_DIRS_FILE_NAME):
-        try:
-            linkedDirs = getDataFromJSON(LINKED_DIRS_FILE_NAME)
-        except ValueError:
-            print(" Error: Wrong format of " + LINKED_DIRS_FILE_NAME)
-            return {}
-    else:
-        print("JSON file with linked directories not found! Default values will be used. \n")
-        linkedDirs = getDataFromJSON('default_linked_dirs.json')
-    return linkedDirs
 
 def getDataFromJSON(JSON):
     with open(JSON, 'r') as file:
