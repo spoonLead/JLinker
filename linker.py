@@ -8,7 +8,7 @@ import json
 # Global vars for linking and their default values
 LINKABLE_FILES_EXTENSION = ".js"
 OUTPUT_FILE = "../main.js"
-LINKED_DIRS_FILE_NAME = "default_linked_dirs.json"
+LINKING_MAP_FILE = "default_linked_dirs.json"
 LINKING_FOR_FINAL_FILES = False
 
 
@@ -39,22 +39,23 @@ def toLinkAccordingArgv():
 def setLinkingParamFromArgv():
     global LINKABLE_FILES_EXTENSION
     global OUTPUT_FILE
-    global LINKED_DIRS_FILE_NAME
+    global LINKING_MAP_FILE
     global LINKING_FOR_FINAL_FILES
 
     if len(sys.argv) >= 4:
         LINKABLE_FILES_EXTENSION = sys.argv[1]
         OUTPUT_FILE = sys.argv[2]
-        LINKED_DIRS_FILE_NAME = sys.argv[3]
-        if (len(sys.argv) == 5) and (sys.argv[4] == "f"):
+        LINKING_MAP_FILE = sys.argv[3]
+    if len(sys.argv) >= 5:
+        if sys.argv[4] == "f":
             LINKING_FOR_FINAL_FILES = True
 
 
 def toLink():
     if LINKING_FOR_FINAL_FILES:
-        linkFinalFiles(getFinalFilesDic())
+        linkForFinalFiles(getLinkingMapFromFile(LINKING_MAP_FILE))
     else:
-        linkFilesInDirs(getLinkedDirsDic())
+        linkForFilesInDirs(getLinkingMapFromFile(LINKING_MAP_FILE))
 
 
 
@@ -62,25 +63,25 @@ def toLink():
 
 
 
-def getFinalFilesDic():
-    if os.path.exists(LINKED_DIRS_FILE_NAME):
-        finalFiles = getDataFromJSON(LINKED_DIRS_FILE_NAME)
-    else:
-        print("Json with linkable files not found")
-        finalFiles = {}
+def getLinkingMapFromFile(filePath):
+    try:
+        return tryGetLinkingMap(filePath)
+    except ValueError:
+        logJSONDecodeError()
+    except FileNotFoundError:
+        logFileNotFoundError()
+    return {}
+
+def tryGetLinkingMap(filePath):
+    finalFiles = getDataFromJSON(filePath)
     return finalFiles
 
 
+def logJSONDecodeError():
+    print(" Error: Wrong format of JSON file")
 
-
-def getLinkedDirsDic():
-    # directories in which files for linking are located
-    if os.path.exists(LINKED_DIRS_FILE_NAME):
-        linkedDirs = getDataFromJSON(LINKED_DIRS_FILE_NAME)
-    else:
-        print("JSON file with linked directories not found! Default values will be used. \n")
-        linkedDirs = getDataFromJSON('default_linked_dirs.json')
-    return linkedDirs
+def logFileNotFoundError():
+    print(" JSON with linking map not found")
 
 def getDataFromJSON(JSON):
     with open(JSON, 'r') as file:
@@ -92,8 +93,8 @@ def getDataFromJSON(JSON):
 
 
 
-def linkFinalFiles(finalFiles):
-    outPutFile = open(OUTPUT_FILE, 'w', encoding = 'UTF-8')
+def linkForFinalFiles(finalFiles):
+    outPutFile = open(OUTPUT_FILE, mode = 'w', encoding = "UTF-8")
     for fileAnnotation, filePath in finalFiles.items():
         linkFinalFileWithOutPutFile(filePath, outPutFile)
         printAnnotationAndPathWithSplit(fileAnnotation, filePath, 30)
@@ -101,8 +102,8 @@ def linkFinalFiles(finalFiles):
 
 
 
-def linkFilesInDirs(linkedDirs):
-    outPutFile = open(OUTPUT_FILE, 'w', encoding = 'UTF-8')
+def linkForFilesInDirs(linkedDirs):
+    outPutFile = open(OUTPUT_FILE, mode = 'w', encoding = "UTF-8")
     for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):              # iteration for all subdirectories
             for finalFile in subDir[2]:          # iteration for all destination files
@@ -116,7 +117,7 @@ def linkFilesInDirs(linkedDirs):
 
 
 def getFilePathForDirAndName(subDir, fileName):
-    return str(str(subDir[0]) + "/" + str(fileName))
+    return str(str(subDir[0]) + '/' + str(fileName))
 
 
 
@@ -128,7 +129,7 @@ def getFileExtension(filePath):
     return Path(filePath).suffix
 
 def getTextFromFile(filePath):
-    linkableFile = open(filePath, mode='r', encoding='UTF-8')
+    linkableFile = open(filePath, mode='r', encoding = "UTF-8")
     fileText = linkableFile.read() + '\n'  # String with all text from file
     linkableFile.close()
     return fileText
@@ -141,8 +142,7 @@ def getTextFromFile(filePath):
 
 
 def printAnnotationAndPathWithSplit(fileAnnotation, filePath, split):
-    printingString = " - "
-    printingString += fileAnnotation
+    printingString = " - " + fileAnnotation
     for i in range(0, split-len(fileAnnotation)):
         printingString += " "
     printingString += filePath
