@@ -52,38 +52,37 @@ def setLinkingParamFromArgv():
 
 def toLink():
     if LINKING_FOR_FINAL_FILES:
-        linkFinalFiles(tryGetFinalFilesDic())
+        linkFinalFiles(getFinalFilesDic())
     else:
-        linkFilesInDirs(tryGetLinkedDirsDic())
+        linkFilesInDirs(getLinkedDirsDic())
 
 
 
 
 
 
-
-def tryGetFinalFilesDic():
-    try:
-        return getFinalFilesDic()
-    except ValueError:
-        logJSONDecodeError()
-        return {}
-    except FileNotFoundError:
-        logFileNotFoundError()
-        return {}
 
 def getFinalFilesDic():
+    try:
+        return tryGetFinalFilesDic()
+    except ValueError:
+        logJSONDecodeError()
+    except FileNotFoundError:
+        logFileNotFoundError()
+    return {}
+
+def tryGetFinalFilesDic():
     finalFiles = getDataFromJSON(LINKED_DIRS_FILE_NAME)
     return finalFiles
 
 def logJSONDecodeError():
-    print(" Error: Wrong format of " + LINKED_DIRS_FILE_NAME)
+    print(" Error: Wrong format of JSON file")
 
 def logFileNotFoundError():
     print(" Json with linkable files not found")
 
 
-def tryGetLinkedDirsDic():
+def getLinkedDirsDic():
     # directories in which files for linking are located
     if os.path.exists(LINKED_DIRS_FILE_NAME):
         try:
