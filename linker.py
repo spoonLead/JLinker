@@ -46,7 +46,8 @@ def setLinkingParamFromArgv():
         LINKABLE_FILES_EXTENSION = sys.argv[1]
         OUTPUT_FILE = sys.argv[2]
         LINKING_MAP_FILE = sys.argv[3]
-        if (len(sys.argv) == 5) and (sys.argv[4] == "f"):
+    if len(sys.argv) >= 5:
+        if sys.argv[4] == "f":
             LINKING_FOR_FINAL_FILES = True
 
 
@@ -93,7 +94,7 @@ def getDataFromJSON(JSON):
 
 
 def linkForFinalFiles(finalFiles):
-    outPutFile = open(OUTPUT_FILE, 'w', encoding = 'UTF-8')
+    outPutFile = open(OUTPUT_FILE, mode = 'w', encoding = "UTF-8")
     for fileAnnotation, filePath in finalFiles.items():
         linkFinalFileWithOutPutFile(filePath, outPutFile)
         printAnnotationAndPathWithSplit(fileAnnotation, filePath, 30)
@@ -102,7 +103,7 @@ def linkForFinalFiles(finalFiles):
 
 
 def linkForFilesInDirs(linkedDirs):
-    outPutFile = open(OUTPUT_FILE, 'w', encoding = 'UTF-8')
+    outPutFile = open(OUTPUT_FILE, mode = 'w', encoding = "UTF-8")
     for dir in linkedDirs.values():              # iteration for all directories in linkedDirs{}
         for subDir in os.walk(dir):              # iteration for all subdirectories
             for finalFile in subDir[2]:          # iteration for all destination files
@@ -116,7 +117,7 @@ def linkForFilesInDirs(linkedDirs):
 
 
 def getFilePathForDirAndName(subDir, fileName):
-    return str(str(subDir[0]) + "/" + str(fileName))
+    return str(str(subDir[0]) + '/' + str(fileName))
 
 
 
@@ -128,7 +129,7 @@ def getFileExtension(filePath):
     return Path(filePath).suffix
 
 def getTextFromFile(filePath):
-    linkableFile = open(filePath, mode='r', encoding='UTF-8')
+    linkableFile = open(filePath, mode='r', encoding = "UTF-8")
     fileText = linkableFile.read() + '\n'  # String with all text from file
     linkableFile.close()
     return fileText
@@ -141,8 +142,7 @@ def getTextFromFile(filePath):
 
 
 def printAnnotationAndPathWithSplit(fileAnnotation, filePath, split):
-    printingString = " - "
-    printingString += fileAnnotation
+    printingString = " - " + fileAnnotation
     for i in range(0, split-len(fileAnnotation)):
         printingString += " "
     printingString += filePath
